@@ -1,0 +1,82 @@
+############################################
+# Karpenter Controller Settings
+############################################
+
+# Global cluster settings
+settings:
+  clusterName: "devopsshack-cluster"
+  interruptionQueue: ""  # Set to cluster name if using Spot instances
+  featureGates:
+    drift: true
+    spotToSpotConsolidation: false  # Set to true if using Spot
+
+############################################
+# Service Account (IRSA)
+############################################
+
+serviceAccount:
+  create: true
+  name: karpenter
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::959959864512:role/KarpenterControllerRole-devopsshack-cluster"
+
+############################################
+# Controller Deployment
+############################################
+
+replicas: 2
+
+# Controller resource requests/limits
+controller:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+############################################
+# Scheduling (keep controller on system nodes)
+############################################
+
+# Node selector to run on system node group
+nodeSelector:
+  role: system
+
+# Alternative: Use affinity for more specific scheduling
+# affinity:
+#   nodeAffinity:
+#     requiredDuringSchedulingIgnoredDuringExecution:
+#       nodeSelectorTerms:
+#         - matchExpressions:
+#             - key: eks.amazonaws.com/nodegroup
+#               operator: In
+#               values:
+#                 - system-node-group
+#   podAntiAffinity:
+#     requiredDuringSchedulingIgnoredDuringExecution:
+#       - topologyKey: kubernetes.io/hostname
+
+# Tolerations for critical workloads
+tolerations:
+  - key: "CriticalAddonsOnly"
+    operator: "Exists"
+  - operator: "Exists"  # Alternative: run on all nodes
+
+############################################
+# Logging
+############################################
+
+logLevel: info  # Options: debug, info, error
+
+############################################
+# Pod Security Context
+############################################
+
+podSecurityContext:
+  fsGroup: 65532
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 65532

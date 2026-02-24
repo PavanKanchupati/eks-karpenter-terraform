@@ -1,0 +1,40 @@
+# Terraform
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+.terraform/
+terraform.tfvars
+terraform.tfvars.json
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
+
+# AWS
+.aws/
+credentials
+config
+
+# Kubernetes
+kubeconfig*
+*.kubeconfig
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Scripts temp files
+/tmp/
+*.bak
+*.tmp
+
+# Sensitive files
+**/karpenter-values.yaml  # Contains IAM role ARN
+**/variables.tfvars

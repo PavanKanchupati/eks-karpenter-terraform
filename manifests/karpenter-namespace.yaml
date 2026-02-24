@@ -1,0 +1,10 @@
+# karpenter-namespace.yaml
+# Only needed if namespace doesn't exist
+# Apply with: kubectl apply -f karpenter-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: karpenter
+  labels:
+    name: karpenter
+    pod-security.kubernetes.io/enforce: privileged

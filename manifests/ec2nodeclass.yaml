@@ -1,0 +1,25 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+  namespace: karpenter
+spec:
+  # Use instance profile instead of role
+  instanceProfile: "KarpenterNodeInstanceProfile-devopsshack-cluster"
+  
+  amiFamily: AL2023
+  amiSelectorTerms:
+    - alias: "al2023@latest"
+    
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: devopsshack-cluster
+        
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: devopsshack-cluster
+        
+  tags:
+    karpenter.sh/discovery: devopsshack-cluster
+    Environment: dev
+    ManagedBy: karpenter
